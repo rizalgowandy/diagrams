@@ -3,7 +3,7 @@ id: saas
 title: Saas
 ---
 
-Node classes list of saas provider.
+Node classes list of the saas provider.
 
 ## saas.alerting
 
@@ -14,6 +14,9 @@ Node classes list of saas provider.
 <img width="30" src="/img/resources/saas/alerting/opsgenie.png" alt="Opsgenie" style="float: left; padding-right: 5px;" >
 **diagrams.saas.alerting.Opsgenie**
 
+<img width="30" src="/img/resources/saas/alerting/pagerduty.png" alt="Pagerduty" style="float: left; padding-right: 5px;" >
+**diagrams.saas.alerting.Pagerduty**
+
 <img width="30" src="/img/resources/saas/alerting/pushover.png" alt="Pushover" style="float: left; padding-right: 5px;" >
 **diagrams.saas.alerting.Pushover**
 
@@ -22,6 +25,9 @@ Node classes list of saas provider.
 
 ## saas.analytics
 
+
+<img width="30" src="/img/resources/saas/analytics/dataform.png" alt="Dataform" style="float: left; padding-right: 5px;" >
+**diagrams.saas.analytics.Dataform**
 
 <img width="30" src="/img/resources/saas/analytics/snowflake.png" alt="Snowflake" style="float: left; padding-right: 5px;" >
 **diagrams.saas.analytics.Snowflake**
@@ -74,6 +80,15 @@ Node classes list of saas provider.
 <img width="30" src="/img/resources/saas/communication/twilio.png" alt="Twilio" style="float: left; padding-right: 5px;" >
 **diagrams.saas.communication.Twilio**
 
+## saas.crm
+
+
+<img width="30" src="/img/resources/saas/crm/intercom.png" alt="Intercom" style="float: left; padding-right: 5px;" >
+**diagrams.saas.crm.Intercom**
+
+<img width="30" src="/img/resources/saas/crm/zendesk.png" alt="Zendesk" style="float: left; padding-right: 5px;" >
+**diagrams.saas.crm.Zendesk**
+
 ## saas.filesharing
 
 
@@ -112,6 +127,15 @@ Node classes list of saas provider.
 
 <img width="30" src="/img/resources/saas/recommendation/recombee.png" alt="Recombee" style="float: left; padding-right: 5px;" >
 **diagrams.saas.recommendation.Recombee**
+
+## saas.security
+
+
+<img width="30" src="/img/resources/saas/security/crowdstrike.png" alt="Crowdstrike" style="float: left; padding-right: 5px;" >
+**diagrams.saas.security.Crowdstrike**
+
+<img width="30" src="/img/resources/saas/security/sonarqube.png" alt="Sonarqube" style="float: left; padding-right: 5px;" >
+**diagrams.saas.security.Sonarqube**
 
 ## saas.social
 

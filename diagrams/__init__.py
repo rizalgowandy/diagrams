@@ -2,7 +2,7 @@ import contextvars
 import os
 import uuid
 from pathlib import Path
-from typing import List, Union, Dict
+from typing import Dict, List, Optional, Union
 
 from graphviz import Digraph
 
@@ -82,12 +82,13 @@ class Diagram:
         filename: str = "",
         direction: str = "LR",
         curvestyle: str = "ortho",
-        outformat: str = "png",
+        outformat: Union[str, list[str]] = "png",
         autolabel: bool = False,
         show: bool = True,
-        graph_attr: dict = {},
-        node_attr: dict = {},
-        edge_attr: dict = {},
+        strict: bool = False,
+        graph_attr: Optional[dict] = None,
+        node_attr: Optional[dict] = None,
+        edge_attr: Optional[dict] = None,
     ):
         """Diagram represents a global diagrams context.
 
@@ -102,14 +103,21 @@ class Diagram:
         :param graph_attr: Provide graph_attr dot config attributes.
         :param node_attr: Provide node_attr dot config attributes.
         :param edge_attr: Provide edge_attr dot config attributes.
+        :param strict: Rendering should merge multi-edges.
         """
+        if graph_attr is None:
+            graph_attr = {}
+        if node_attr is None:
+            node_attr = {}
+        if edge_attr is None:
+            edge_attr = {}
         self.name = name
         if not name and not filename:
             filename = "diagrams_image"
         elif not filename:
             filename = "_".join(self.name.split()).lower()
         self.filename = filename
-        self.dot = Digraph(self.name, filename=self.filename)
+        self.dot = Digraph(self.name, filename=self.filename, strict=strict)
 
         # Set attributes.
         for k, v in self._default_graph_attrs.items():
@@ -131,7 +139,8 @@ class Diagram:
         if isinstance(outformat, list):
             for one_format in outformat:
                 if not self._validate_outformat(one_format):
-                    raise ValueError(f'"{one_format}" is not a valid output format')
+                    raise ValueError(
+                        f'"{one_format}" is not a valid output format')
         else:
             if not self._validate_outformat(outformat):
                 raise ValueError(f'"{outformat}" is not a valid output format')
@@ -213,7 +222,7 @@ class Cluster:
         self,
         label: str = "cluster",
         direction: str = "LR",
-        graph_attr: dict = {},
+        graph_attr: Optional[dict] = None,
     ):
         """Cluster represents a cluster context.
 
@@ -221,6 +230,8 @@ class Cluster:
         :param direction: Data flow direction. Default is 'left to right'.
         :param graph_attr: Provide graph_attr dot config attributes.
         """
+        if graph_attr is None:
+            graph_attr = {}
         self.label = label
         self.name = "cluster_" + self.label
 
@@ -468,7 +479,8 @@ class Edge:
 
         if label:
             # Graphviz complaining about using label for edges, so replace it with xlabel.
-            # Update: xlabel option causes the misaligned label position: https://github.com/mingrammer/diagrams/issues/83
+            # Update: xlabel option causes the misaligned label position:
+            # https://github.com/mingrammer/diagrams/issues/83
             self._attrs["label"] = label
         if color:
             self._attrs["color"] = color
@@ -480,7 +492,8 @@ class Edge:
         """Implement Self - Node or Edge and Self - [Nodes]"""
         return self.connect(other)
 
-    def __rsub__(self, other: Union[List["Node"], List["Edge"]]) -> List["Edge"]:
+    def __rsub__(self, other: Union[List["Node"],
+                 List["Edge"]]) -> List["Edge"]:
         """Called for [Nodes] or [Edges] - Self because list don't have __sub__ operators."""
         return self.append(other)
 
@@ -494,15 +507,23 @@ class Edge:
         self.reverse = True
         return self.connect(other)
 
-    def __rrshift__(self, other: Union[List["Node"], List["Edge"]]) -> List["Edge"]:
+    def __rrshift__(self,
+                    other: Union[List["Node"],
+                                 List["Edge"]]) -> List["Edge"]:
         """Called for [Nodes] or [Edges] >> Self because list of Edges don't have __rshift__ operators."""
         return self.append(other, forward=True)
 
-    def __rlshift__(self, other: Union[List["Node"], List["Edge"]]) -> List["Edge"]:
+    def __rlshift__(self,
+                    other: Union[List["Node"],
+                                 List["Edge"]]) -> List["Edge"]:
         """Called for [Nodes] or [Edges] << Self because list of Edges don't have __lshift__ operators."""
         return self.append(other, reverse=True)
 
-    def append(self, other: Union[List["Node"], List["Edge"]], forward=None, reverse=None) -> List["Edge"]:
+    def append(self,
+               other: Union[List["Node"],
+                            List["Edge"]],
+               forward=None,
+               reverse=None) -> List["Edge"]:
         result = []
         for o in other:
             if isinstance(o, Edge):
@@ -511,7 +532,12 @@ class Edge:
                 self._attrs = o.attrs.copy()
                 result.append(o)
             else:
-                result.append(Edge(o, forward=forward, reverse=reverse, **self._attrs))
+                result.append(
+                    Edge(
+                        o,
+                        forward=forward,
+                        reverse=reverse,
+                        **self._attrs))
         return result
 
     def connect(self, other: Union["Node", "Edge", List["Node"]]):

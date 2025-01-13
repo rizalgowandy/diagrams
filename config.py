@@ -13,7 +13,7 @@ DIR_TEMPLATE = "templates"
 
 PROVIDERS = (
     "base",
-    "onprem"
+    "onprem",
     "aws",
     "azure",
     "digitalocean",
@@ -83,7 +83,7 @@ UPPER_WORDS = {
         "sa", "sc", "sts", "svc",
     ),
     "oci": ("oci", "ocid", "oke", "ocir", "ddos", "waf", "bm", "vm", "cdn", "vpn", "dns", "nat", "dms", "api", "id"),
-    "elastic": ("apm", "siem", "ece", "eck"),
+    "elastic": ("apm", "siem", "ece", "eck", "sql"),
     "generic": ("vpn", "ios", "xen", "sql", "lxc"),
     "outscale": ("osc",),
     "openstack": ("rpm", "loci", "nfv", "ec2api"),
@@ -246,6 +246,9 @@ ALIASES = {
             "ElbClassicLoadBalancer": "CLB",
             "ElbNetworkLoadBalancer": "NLB",
             "GlobalAccelerator": "GAX",
+            "InternetGateway": "IGW",
+            "TransitGateway": "TGW",
+            "TransitGatewayAttachment": "TGWAttach",
         },
         "security": {
             "CertificateManager": "ACM",
@@ -429,7 +432,9 @@ ALIASES = {
     "programming": {
         "framework": {
             "Fastapi": "FastAPI",
-            "Graphql": "GraphQL"
+            "Graphql": "GraphQL",
+            "Dotnet": "DotNet",
+            "Nextjs": "NextJs"
         },
         "language": {
             "Javascript": "JavaScript",
@@ -446,7 +451,9 @@ ALIASES = {
     },
     "elastic": {
         "elasticsearch": {
+            "Elasticsearch": "ElasticSearch",
             "Logstash": "LogStash",
+            "MachineLearning": "ML",
         }
     },
     "outscale": {
