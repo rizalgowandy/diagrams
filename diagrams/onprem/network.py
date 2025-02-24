@@ -72,6 +72,10 @@ class Linkerd(_Network):
     _icon = "linkerd.png"
 
 
+class Mikrotik(_Network):
+    _icon = "mikrotik.png"
+
+
 class Nginx(_Network):
     _icon = "nginx.png"
 
@@ -118,6 +122,10 @@ class Vyos(_Network):
 
 class Wildfly(_Network):
     _icon = "wildfly.png"
+
+
+class Yarp(_Network):
+    _icon = "yarp.png"
 
 
 class Zookeeper(_Network):

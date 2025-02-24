@@ -5,14 +5,14 @@ yourself.
 
 ## Set up your environment
 
-* See [DEVELOPMENT][DEVELOPMENT.md]
+- See [DEVELOPMENT][DEVELOPMENT.md]
 
 ## Resources
 
 ### Update nodes
 
-All node classes was auto-generated from image resource files. For example, the
-`diagram.aws.compute.EC2` class was auto-generated based on
+All node classes are auto-generated from image resource files. For example, the
+`diagram.aws.compute.EC2` class is auto-generated based on the
 `resources/aws/compute/ec2.png` image resource file.
 
 So, if you want to add new node resources or update existing node resources, you
@@ -30,18 +30,33 @@ ffmpeg -i my_big_image.jpg -vf scale=w=256:h=256:force_original_aspect_ratio=dec
 
 Then just run the `./autogen.sh` to generate the added or updated node classes. (cf. [DEVELOPMENT][DEVELOPMENT.md])
 
-> IMPORTANT NOTE: To run `autogen.sh`, you need [round][round], [black][black] and
-> [inkscape][inkscape] command lines that are used for cleaning the image
+> IMPORTANT NOTE: To run `autogen.sh`, you need the [round][round], [black][black] and
+> [inkscape][inkscape] command line tools that are used for cleaning the image
 > resource filenames and formatting the generated python code.
 >
-> macOS users can download the inkscape via Homebrew.
+> macOS users can download inkscape via Homebrew.
 >
-> Or you should use the docker image.
+> Or you can use the docker image.
 
 [DEVELOPMENT.md]: ./DEVELOPMENT.md
 [round]: https://github.com/mingrammer/round
 [black]: https://pypi.org/project/black
 [inkscape]: https://inkscape.org/ko/release
+
+### Add new provider
+
+To add a new provider to Diagrams, please follow the steps below in addition to the image intructions above:
+- in `autogen.sh` add in the `providers` variable the new provider code
+- in `config.py`:
+  - in the `providers` variable, add the new provider code
+  - in the `FILE_PREFIXES` variable, add a new entry with your new provider code. And eventually a file prefix
+  - Optionnaly, update the `UPPER_WORDS` variable to a new entry with your new provider code.
+  - in the `ALIASES` variable, add a new entry with your new provider code. See below on how to add new aliases.
+- in `scripts/resource.py`:
+  - add a function `cleaner_XXX` (replace XXX by your provider name). For the implementation look at the existing functions
+  - in the `cleaners` variable, add an entry with your new provider code and the function defined above
+- in `sidebars.json`, update the `Nodes` array to add the reference of the new provider
+- in the `diagrams` folder, add a new file `__init__.py` for the new provider. For the content look at the existing providers
 
 ### Update Aliases
 
@@ -54,11 +69,13 @@ or update the `ALIASES` map in [config.py](config.py).
 
 Then just run the `./autogen.sh` to generate the added or updated aliases. (cf. [DEVELOPMENT][DEVELOPMENT.md])
 
-> IMPORTANT NOTE: To run `autogen.sh`, you need [round][round] and
-> [inkscape][inkscape] command lines that are used for cleaning the image
+> IMPORTANT NOTE: To run `autogen.sh`, you need the [round][round] and
+> [inkscape][inkscape] command line tools that are used for cleaning the image
 > resource filenames.
 >
-> Or you should use the docker image.
+> macOS users can download inkscape via Homebrew.
+>
+> Or you can use the docker image.
 
 ## Run Tests
 

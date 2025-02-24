@@ -1,9 +1,11 @@
 """
 A set of nodes and edges to visualize software architecture using the C4 model.
 """
+
 import html
 import textwrap
-from diagrams import Cluster, Node, Edge
+
+from diagrams import Cluster, Edge, Node
 
 
 def _format_node_label(name, key, description):
@@ -25,7 +27,8 @@ def _format_description(description):
     """
     wrapper = textwrap.TextWrapper(width=40, max_lines=3)
     lines = [html.escape(line) for line in wrapper.wrap(description)]
-    lines += [""] * (3 - len(lines))  # fill up with empty lines so it is always three
+    # fill up with empty lines so it is always three
+    lines += [""] * (3 - len(lines))
     return "<br/>".join(lines)
 
 
@@ -58,24 +61,50 @@ def C4Node(name, technology="", description="", type="Container", **kwargs):
 
 
 def Container(name, technology="", description="", **kwargs):
-    return C4Node(name, technology=technology, description=description, type="Container")
+    container_attributes = {
+        "name": name,
+        "technology": technology,
+        "description": description,
+        "type": "Container",
+    }
+    container_attributes.update(kwargs)
+    return C4Node(**container_attributes)
 
 
 def Database(name, technology="", description="", **kwargs):
-    return C4Node(name, technology=technology, description=description, type="Database", shape="cylinder", labelloc="b")
+    database_attributes = {
+        "name": name,
+        "technology": technology,
+        "description": description,
+        "type": "Database",
+        "shape": "cylinder",
+        "labelloc": "b",
+    }
+    database_attributes.update(kwargs)
+    return C4Node(**database_attributes)
 
 
 def System(name, description="", external=False, **kwargs):
-    type = "External System" if external else "System"
-    fillcolor = "gray60" if external else "dodgerblue4"
-    return C4Node(name, description=description, type=type, fillcolor=fillcolor)
+    system_attributes = {
+        "name": name,
+        "description": description,
+        "type": "External System" if external else "System",
+        "fillcolor": "gray60" if external else "dodgerblue4",
+    }
+    system_attributes.update(kwargs)
+    return C4Node(**system_attributes)
 
 
 def Person(name, description="", external=False, **kwargs):
-    type = "External Person" if external else "Person"
-    fillcolor = "gray60" if external else "dodgerblue4"
-    style = "rounded,filled"
-    return C4Node(name, description=description, type=type, fillcolor=fillcolor, style=style)
+    person_attributes = {
+        "name": name,
+        "description": description,
+        "type": "External Person" if external else "Person",
+        "fillcolor": "gray60" if external else "dodgerblue4",
+        "style": "rounded,filled",
+    }
+    person_attributes.update(kwargs)
+    return C4Node(**person_attributes)
 
 
 def SystemBoundary(name, **kwargs):
@@ -90,8 +119,10 @@ def SystemBoundary(name, **kwargs):
 
 
 def Relationship(label="", **kwargs):
-    edge_attribtues = {"style": "dashed", "color": "gray60"}
-    if label:
-        edge_attribtues.update({"label": _format_edge_label(label)})
-    edge_attribtues.update(kwargs)
-    return Edge(**edge_attribtues)
+    edge_attributes = {
+        "style": "dashed",
+        "color": "gray60",
+        "label": _format_edge_label(label) if label else "",
+    }
+    edge_attributes.update(kwargs)
+    return Edge(**edge_attributes)
